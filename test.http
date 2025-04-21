@@ -1,0 +1,31 @@
+### Test user registration
+POST http://localhost:8000/api/users/register
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "securepassword"
+}
+
+### Test adding an expense
+POST http://localhost:8000/api/expenses
+Content-Type: application/json
+
+{
+    "id": "expense1",
+    "amount": 100,
+    "payer_id": "user-id-1",
+    "split_between": ["user-id-1", "user-id-2"],
+    "description": "Lunch"
+}
+
+### Test creating a group
+POST http://localhost:8000/api/groups
+Content-Type: application/json
+
+{
+    "id": "group1",
+    "name": "Group 1",
+    "members": ["user-id-1", "user-id-2"]
+}
