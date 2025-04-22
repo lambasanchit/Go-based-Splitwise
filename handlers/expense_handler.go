@@ -3,10 +3,9 @@ package handlers
 import (
 	"encoding/json"
 	"go-based-splitwise/models"
+	storage "go-based-splitwise/storages"
 	"net/http"
 )
-
-var expenses = make(map[string]models.Expense) // In-memory storage for expenses
 
 // AddExpense handles adding a new expense
 func AddExpense(w http.ResponseWriter, r *http.Request) {
@@ -16,7 +15,8 @@ func AddExpense(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	expenses[expense.ID] = expense
+	storage.Expenses[expense.ID] = expense
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"message": "Expense added successfully",

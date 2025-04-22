@@ -3,10 +3,9 @@ package handlers
 import (
 	"encoding/json"
 	"go-based-splitwise/models"
+	storage "go-based-splitwise/storages"
 	"net/http"
 )
-
-var users = make(map[string]models.User) // In-memory storage for users
 
 // RegisterUser handles user registration
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
@@ -16,7 +15,8 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for _, existingUser := range users {
+	// Check for duplicate email
+	for _, existingUser := range storage.Users {
 		if existingUser.Email == user.Email {
 			http.Error(w, "Email already exists", http.StatusConflict)
 			return
@@ -24,7 +24,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	newUser := models.NewUser(user.Name, user.Email, user.Password)
-	users[newUser.ID] = newUser
+	storage.Users[newUser.ID] = newUser
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)

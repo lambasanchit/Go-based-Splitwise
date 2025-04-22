@@ -3,10 +3,9 @@ package handlers
 import (
 	"encoding/json"
 	"go-based-splitwise/models"
+	storage "go-based-splitwise/storages"
 	"net/http"
 )
-
-var groups = make(map[string]models.Group) // In-memory storage for groups
 
 // CreateGroup creates a new group
 func CreateGroup(w http.ResponseWriter, r *http.Request) {
@@ -16,7 +15,8 @@ func CreateGroup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	groups[group.ID] = group
+	storage.Groups[group.ID] = group
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
 		"message": "Group created successfully",
